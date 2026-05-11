@@ -19,10 +19,11 @@ public class WorkflowController {
     @PostMapping("/{ocorrenciaId}/status")
     public ResponseEntity<HistoricoWorkflow> atualizarStatus(
             @PathVariable Long ocorrenciaId,
-            @RequestParam StatusOcorrencia status,
-            @RequestParam(required = false) String observacao) {
+            @RequestParam Integer status,
+            @RequestParam(required = false) String observacao,
+            @RequestHeader("Authorization") String token) {
 
-        HistoricoWorkflow historico = service.atualizarStatus(ocorrenciaId, status, observacao);
+        HistoricoWorkflow historico = service.atualizarStatus(ocorrenciaId, status, observacao, token);
         return ResponseEntity.ok(historico);
     }
 
