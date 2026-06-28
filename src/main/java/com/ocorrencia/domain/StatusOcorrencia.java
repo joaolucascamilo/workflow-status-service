@@ -1,5 +1,8 @@
 package com.ocorrencia.domain;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Status possíveis de uma ocorrência", enumAsRef = true)
 public enum StatusOcorrencia {
     REGISTRADO(1, "Registrado"),
     CANCELADO(2, "Cancelado"),
