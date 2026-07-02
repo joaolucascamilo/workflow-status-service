@@ -4,7 +4,7 @@ import com.ocorrencia.dto.OcorrenciaDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "ms-ocorrencias", url = "http://localhost:8081")
+@FeignClient(name = "ms-ocorrencias", url = "${ms-ocorrencias.url}")
 public interface OcorrenciasClient {
 
     @GetMapping("/api/ocorrencias/{id}")
