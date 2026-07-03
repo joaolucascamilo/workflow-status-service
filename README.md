@@ -22,6 +22,7 @@ Este serviço faz parte de uma arquitetura de microsserviços composta por:
 - **Spring Data JPA**
 - **PostgreSQL**
 - **Lombok**
+- **SpringDoc OpenAPI / Swagger UI**
 - **JUnit 5 + Mockito**
 - **Maven**
 
@@ -47,7 +48,14 @@ spring.datasource.password=password123
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# URLs dos microsservicos consumidos via Feign
+ms-ocorrencias.url=${MS_OCORRENCIAS_URL:http://localhost:8081}
+ms-usuarios.url=${MS_USUARIOS_URL:http://localhost:8082}
 ```
+
+As URLs de `ms-ocorrencias` e `ms-usuarios` podem ser sobrescritas em produção através das variáveis de ambiente `MS_OCORRENCIAS_URL` e `MS_USUARIOS_URL`.
 
 Crie o banco de dados antes de iniciar o serviço:
 
@@ -56,6 +64,14 @@ CREATE DATABASE workflow_db;
 ```
 
 O Hibernate cria automaticamente a tabela `historico_workflow` na primeira execução.
+
+### CORS
+
+O serviço libera acesso via CORS (`CorsConfig`) para os seguintes origins, com suporte a `GET`, `POST`, `PUT`, `DELETE` e `OPTIONS`:
+
+- `http://localhost:5500`
+- `http://127.0.0.1:5500`
+- `https://somar.up.railway.app`
 
 ## Como Executar
 
@@ -69,6 +85,13 @@ java -jar target/workflow-status-service-0.0.1-SNAPSHOT.jar
 ```
 
 O serviço estará disponível em `http://localhost:8083`.
+
+## Documentação da API (Swagger)
+
+Com o serviço em execução, a documentação interativa gerada pelo SpringDoc OpenAPI fica disponível em:
+
+- Swagger UI: `http://localhost:8083/swagger-ui.html`
+- Especificação OpenAPI (JSON): `http://localhost:8083/v3/api-docs`
 
 ## Endpoints
 
@@ -149,6 +172,9 @@ Os testes cobrem:
 ```
 src/main/java/com/ocorrencia/
 ├── WorkflowStatusServiceApplication.java
+├── config/
+│   ├── CorsConfig.java
+│   └── OpenApiConfig.java
 ├── controller/
 │   └── WorkflowController.java
 ├── service/
@@ -158,6 +184,7 @@ src/main/java/com/ocorrencia/
 ├── domain/
 │   └── StatusOcorrencia.java
 ├── dto/
+│   ├── ErroResponse.java
 │   ├── OcorrenciaDTO.java
 │   └── PontuacaoRequestDTO.java
 ├── client/
